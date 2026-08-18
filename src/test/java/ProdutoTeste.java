@@ -22,9 +22,18 @@ public class ProdutoTeste {
         });
     }
     
+    @Test
     void verificaSeNomeGeraErroQuandoErrado() {
-    	Produto produto = new Produto();
-    	produto.setNomeProduto("Cadeira");
+    	List<Produto> produto = new ArrayList<>();
+    	
+    	produto.add(new Produto("Cadeira", 100.00, 5, "Movel"));
+    	produto.add(new Produto("Cadeiras", 100.00, 5, "Movel"));
+    	produto.add(new Produto("Mesas", 100.00, 5, "Movel"));
+    	
+    	PedidosProdutos pedido = new PedidosProdutos();
+    	String nomeCorreto = pedido.verificaNome(produto, "Cadeira").getNomeProduto();
+    	
+    	assertEquals("Cadeirass", nomeCorreto);
     	
     	
     }

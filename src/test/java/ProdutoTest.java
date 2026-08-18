@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import main.model.Produto;
 import main.service.PedidosProdutos;
 
-public class ProdutoTeste {
+public class ProdutoTest {
 
     @Test
     void testeModelQuantidadeNaoPodeSerNegativo() {

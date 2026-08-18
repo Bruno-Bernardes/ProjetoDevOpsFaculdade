@@ -47,7 +47,7 @@ public class ProdutoTest {
     	
     	PedidosProdutos pedido = new PedidosProdutos();
     	String nomeCorreto = pedido.verificaNome(produto, "Cadeira").getNomeProduto();
-    	
+    	//comentario teste
     	assertEquals("Cadeira", nomeCorreto);
     	
     	

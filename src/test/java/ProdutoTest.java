@@ -23,6 +23,7 @@ public class ProdutoTest {
     }
     
 
+    
     @Test
     void verificaSeNomeEigual() {
     	List<Produto> produto = new ArrayList<>();
@@ -33,7 +34,7 @@ public class ProdutoTest {
     	
     	PedidosProdutos pedido = new PedidosProdutos();
     	String nomeCorreto = pedido.verificaNome(produto, "Cadeira").getNomeProduto();
-    	//comentario teste 2 2 2 2 2 3
+    	//comentario teste 2 2 2 2 2 
     	assertEquals("Cadeira", nomeCorreto);
     	
     	

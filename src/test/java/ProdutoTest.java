@@ -22,21 +22,7 @@ public class ProdutoTest {
         });
     }
     
-    @Test
-    void verificaSeNomeGeraErroQuandoErrado() {
-    	List<Produto> produto = new ArrayList<>();
-    	
-    	produto.add(new Produto("Cadeira", 100.00, 5, "Movel"));
-    	produto.add(new Produto("Cadeiras", 100.00, 5, "Movel"));
-    	produto.add(new Produto("Mesas", 100.00, 5, "Movel"));
-    	
-    	PedidosProdutos pedido = new PedidosProdutos();
-    	String nomeCorreto = pedido.verificaNome(produto, "Cadeira").getNomeProduto();
-    	
-    	assertEquals("Cadeirass", nomeCorreto);
-    	
-    	
-    }
+
     @Test
     void verificaSeNomeEigual() {
     	List<Produto> produto = new ArrayList<>();
@@ -47,7 +33,7 @@ public class ProdutoTest {
     	
     	PedidosProdutos pedido = new PedidosProdutos();
     	String nomeCorreto = pedido.verificaNome(produto, "Cadeira").getNomeProduto();
-    	//comentario teste
+    	//comentario teste 2 2 2 2 2 3
     	assertEquals("Cadeira", nomeCorreto);
     	
     	

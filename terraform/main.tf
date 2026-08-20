@@ -8,14 +8,6 @@ terraform {
     }
   }
 
-  # Armazena o estado da infraestrutura no S3 (essencial para o GitHub Actions)
-  backend "s3" {
-    bucket = "seu-bucket-de-state-aqui" # Substitua pelo nome real do seu bucket S3 criado na AWS
-    key    = "terraform/state/terraform.tfstate"
-    region = "us-east-1"
-  }
-}
-
 provider "aws" {
   region = var.aws_region
 }

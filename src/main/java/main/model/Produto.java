@@ -15,7 +15,7 @@ public class Produto {
 		this.quantidade = this.quantidadeNaoPodeSerNegativo(quantidade);
 		this.categoria = categoria;
 	}
-	
+	//teste
 	private Integer quantidadeNaoPodeSerNegativo(Integer quantidade) {
 		
 		if(quantidade >= 0) {

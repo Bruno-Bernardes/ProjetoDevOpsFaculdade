@@ -1,0 +1,61 @@
+name: "Terraform CI/CD Pipeline"
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  terraform:
+    name: "Terraform Automation"
+    runs-on: ubuntu-latest
+
+    # Define o diretório onde estão os arquivos .tf
+    defaults:
+      run:
+        working-directory: ./terraform
+
+    steps:
+      # 1. Baixa o código do repositório para a máquina virtual do GitHub
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # 2. Configura as credenciais da AWS na sessão do Actions
+      - name: Configurar credenciais AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+		  aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+      # 3. Instala a CLI do Terraform na máquina do runner
+      - name: Instalar Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      # 4. Formata e valida os arquivos do Terraform
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      # 5. Gera o plano de alteração no Pull Request
+      - name: Terraform Plan
+        run: terraform plan -no-color
+        if: github.event_name == 'pull_request'
+
+      # 6. Executa o Apply automaticamente quando houver Push na branch principal
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve

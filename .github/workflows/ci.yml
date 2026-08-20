@@ -1,4 +1,4 @@
-name: CI - Java
+name: CI/CD - Java & Docker
 
 on:
   push:
@@ -12,12 +12,14 @@ on:
       - develop
 
 jobs:
-  build:
-
+  # -------------------------------------------------------------
+  # JOB 1: Integração Contínua (CI)
+  # -------------------------------------------------------------
+  ci:
+    name: Build, Testes e Análise
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Baixar código
         uses: actions/checkout@v4
 
@@ -30,3 +32,41 @@ jobs:
 
       - name: Compilar e executar testes
         run: mvn clean verify
+
+  # -------------------------------------------------------------
+  # JOB 2: Entrega Contínua (CD)
+  # Executa APENAS na branch main se os testes do Job 1 passarem
+  # -------------------------------------------------------------
+  cd:
+    name: Build da Imagem e Publicação
+    needs: ci
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Fazer Login no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Construir e Enviar Imagem Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKER_USERNAME }}/minha-aplicacao-java:latest
+            ${{ secrets.DOCKER_USERNAME }}/minha-aplicacao-java:${{ github.sha }}
+
+      - name: Executar Deploy Automatizado
+        run: |
+          echo "Simulando/Disparando o deploy da imagem ${{ secrets.DOCKER_USERNAME }}/minha-aplicacao-java:${{ github.sha }} no ambiente de produção..."
+          # Aqui entra o comando real de deploy (ex: SSH no servidor, helm upgrade, kubectl rollout, etc.)
